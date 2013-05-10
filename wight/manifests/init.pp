@@ -74,6 +74,7 @@ define wight (
     enable => true,
     command => "wight -c ${conf_path}/${conf_file}",
     user => $user,
-    group => $group
+    group => $group,
+    require => [File["${conf_path}/${conf_file}"], Package['wight']]
   }
 }
