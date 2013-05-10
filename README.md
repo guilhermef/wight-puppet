@@ -13,5 +13,6 @@ I highly recommend you to use it through 'librarian-puppet'
 and you're done!
 
 Then you can add wight to your module:
+
     wight {'my-wight-server':
     }
