@@ -1,0 +1,9 @@
+language: ruby
+ruby:
+  - 1.9.3
+
+install:
+  - make setup
+
+script:
+    - make ci-test
