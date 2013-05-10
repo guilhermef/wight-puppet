@@ -1,47 +1,53 @@
 # == Define: wight
 #
-# Creates a wight server running on 0.0.0.0:8080
+# Creates a wight server running on 0.0.0.0:8080 by default
 #
 # === Parameters
 #
-# Document parameters here.
-#
-# [*sample_parameter*]
-#   Explanation of what this parameter affects and what it defaults to.
-#   e.g. "Specify one or more upstream ntp servers as an array."
-#
-# === Variables
-#
-# Here you should define a list of variables that this module would require.
-#
-# [*sample_variable*]
-#   Explanation of how this variable affects the funtion of this class and if it
-#   has a default. e.g. "The parameter enc_ntp_servers must be set by the
-#   External Node Classifier as a comma separated list of hostnames." (Note,
-#   global variables should not be used in preference to class parameters  as of
-#   Puppet 2.6.)
+# [*user*]
+#   User to run and install wight and supervisor
+#   defaul: root
+# [*group*]
+#   Group to run and install wight and supervisor
+#   defaul: root
+# [*conf_path*]
+#   Path where the config file will be created
+#   defaul: /etc/$title
+# [*conf_file*]
+#   Config file name and extension
+#   defaul: $title.conf
+# [*config_param*]
+#   Params tha will populate wight.
+#   Params can be lowercase like: {mongo_host => '10.2.0.1'}
+#   It's automatically transformed to uppercase
+#   defaul: {number_of_forks => $::processorcount}
+# [*wight_version*]
+#   wight version to be used
+#   defaul: latest
 #
 # === Examples
 #
-#  class { wight:
-#    servers => [ 'pool.ntp.org', 'ntp.local.company.com' ]
-#  }
+# wight {'my-wight-server':
+# }
 #
 # === Authors
 #
-# Author Name <author@domain.com>
+# Guilherme Souza <guivideojob@gmail.com>
 #
 # === Copyright
 #
-# Copyright 2013 Your name here, unless otherwise noted.
+# Copyright 2013 Guilherme Souza
 #
 define wight (
   $user='root',
   $group='root',
   $conf_path="/etc/${title}",
   $conf_file="${title}.conf",
-  $config_params={number_of_forks => $::processorcount}
+  $config_params={number_of_forks => $::processorcount},
+  $wight_version='latest'
   ) {
+
+  include supervisor
 
   file{ $conf_path:
     ensure => directory,
@@ -56,5 +62,18 @@ define wight (
     mode => 0755,
     content => template('wight/sample.conf.erb'),
     require => File[$conf_path]
+  }
+
+  package{'wight':
+    ensure => $wight_version,
+    provider => 'pip'
+  }
+
+  supervisor::service { $title:
+    ensure => 'present',
+    enable => true,
+    command => "wight -c ${conf_path}/${conf_file}",
+    user => $user,
+    group => $group
   }
 }

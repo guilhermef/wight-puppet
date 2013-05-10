@@ -5,5 +5,3 @@ license 'MIT'
 summary 'Module for https://github.com/heynemann/wight'
 description 'Module for https://github.com/heynemann/wight'
 project_page 'https://github.com/guilhermef/wight-puppet'
-
-dependency 'guilhermef/nginx'

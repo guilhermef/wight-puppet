@@ -1,0 +1,8 @@
+FORGE
+  remote: http://forge.puppetlabs.com
+  specs:
+    guilhermef/supervisor (0.0.1)
+
+DEPENDENCIES
+  guilhermef/supervisor (>= 0)
+
