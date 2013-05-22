@@ -38,41 +38,49 @@
 #
 # Copyright 2013 Guilherme Souza
 #
+
 define wight (
   $user='root',
   $group='root',
   $conf_path="/etc/${title}",
   $conf_file="${title}.conf",
   $config_params={number_of_forks => $::processorcount},
-  $wight_version='latest'
+  $wight_version='latest',
+  $wight_type='api',
   ) {
 
   include supervisor
 
-  file{ $conf_path:
-    ensure => directory,
-    owner => $user,
-    group => $group,
-    mode => 0755
+  if ! defined(File[$conf_path]) {
+    file{ $conf_path:
+      ensure => directory,
+      owner => $user,
+      group => $group,
+      mode => 0755
+    }
   }
 
-  file{ "${conf_path}/${conf_file}":
-    owner => $user,
-    group => $group,
-    mode => 0755,
-    content => template('wight/sample.conf.erb'),
-    require => File[$conf_path]
+  if ! defined(File["${conf_path}/${conf_file}"]) {
+    file{ "${conf_path}/${conf_file}":
+      owner => $user,
+      group => $group,
+      mode => 0755,
+      content => template('wight/sample.conf.erb'),
+      require => File[$conf_path]
+    }
   }
 
-  package{'wight':
-    ensure => $wight_version,
-    provider => 'pip'
+  if ! defined(Package['wight']) {
+    package{'wight':
+      ensure => $wight_version,
+      provider => 'pip'
+    }
   }
 
   supervisor::service { $title:
     ensure => 'present',
     enable => true,
-    command => "wight -c ${conf_path}/${conf_file}",
+    command => "wight-${wight_type} -c ${conf_path}/${conf_file}",
     user => $user,
     group => $group,
     require => [File["${conf_path}/${conf_file}"], Package['wight']]

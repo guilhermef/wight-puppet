@@ -10,6 +10,7 @@ shared_context "common configuration" do |params|
   let(:group) {params[:group] || "root"}
   let(:config_params) {params[:config_params] || {'NUMBER_OF_FORKS' => 4}}
   let(:wight_version) {params[:wight_version] || 'latest'}
+  let(:wight_type) {params[:wight_type] || 'api'}
 end
 
 shared_examples "a config file" do |params|
@@ -51,7 +52,7 @@ shared_examples "a service" do |params|
     should contain_supervisor__service(title).with(
       ensure: 'present',
       enable: true,
-      command: "wight -c #{conf_path}/#{conf_file}",
+      command: "wight-#{wight_type} -c #{conf_path}/#{conf_file}",
       user: user,
       group: group,
       require: ["File[#{conf_path}/#{conf_file}]", "Package[wight]"]
@@ -77,6 +78,9 @@ describe "wight" do
 
   context "service" do
     it_behaves_like "a service"
+    it_behaves_like "a service", {wight_type: 'web'}
+    it_behaves_like "a service", {wight_type: 'worker'}
+    it_behaves_like "a service", {wight_type: 'api'}
   end
 
 end

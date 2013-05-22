@@ -1,8 +1,35 @@
 FORGE
   remote: http://forge.puppetlabs.com
   specs:
+    example42/firewall (2.0.0)
+      example42/iptables (>= 2.0.0)
+      example42/puppi (>= 2.0.0)
+    example42/iptables (2.0.1)
+      example42/puppi (>= 2.0.0)
+    example42/monitor (2.0.0)
+      example42/puppi (>= 2.0.0)
+    example42/puppi (2.0.8)
     guilhermef/supervisor (0.0.1)
+
+GIT
+  remote: git://github.com/example42/puppet-mongodb.git
+  ref: master
+  sha: e6038f136ccacacfb6338d2f759392524e36c77c
+  specs:
+    mongodb (2.0.10)
+      example42/firewall (>= 2.0.0)
+      example42/monitor (>= 2.0.0)
+      example42/puppi (>= 2.0.0)
+
+GIT
+  remote: git://github.com/windowsrefund/puppet-sudoers.git
+  ref: master
+  sha: 621355101f0489cea832b0c3af5db59933835fe9
+  specs:
+    sudoers (0.0.1)
 
 DEPENDENCIES
   guilhermef/supervisor (>= 0)
+  mongodb (>= 0)
+  sudoers (>= 0)
 

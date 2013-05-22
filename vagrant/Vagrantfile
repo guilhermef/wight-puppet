@@ -1,0 +1,21 @@
+Vagrant::Config.run do |config|
+  config.vm.box = 'Ubuntu Quantal 64'
+  config.vm.box_url = 'https://github.com/downloads/roderik/VagrantQuantal64Box/quantal64.box'
+  # config.vm.customize ["modifyvm", :id, "--memory", 256]
+
+  [["wight.resources.vagrant.com", "35"], ["wight.vagrant.com", "33"], ["wight.worker.vagrant.com", "34"]].each do |host, ip|
+    config.vm.define host.to_sym do |admin|
+        admin.vm.host_name = host
+        admin.vm.network :hostonly, "33.33.33.#{ip}"
+
+      admin.vm.provision :puppet do |puppet|
+        puppet.module_path = ['../', '../modules']
+        puppet.manifests_path = 'puppet/manifests'
+        puppet.manifest_file = 'site.pp'
+        # puppet.options = %w[--templatedir templates --verbose --debug --trace]
+        puppet.options = %w[--templatedir templates]
+      end
+    end
+  end
+end
+
