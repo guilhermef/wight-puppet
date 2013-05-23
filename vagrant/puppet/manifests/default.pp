@@ -13,10 +13,4 @@ node 'BaseNode' {
   package {'python-dev':
   }
 
-  # sudoers::group { 'admin':
-  #   ensure => present,
-  #   nopasswd => true,
-  #   commands => "ALL",
-  #   require => User['puppet']
-  # }
 }
