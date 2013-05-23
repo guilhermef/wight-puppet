@@ -11,3 +11,6 @@ up:
 
 provision:
 	@cd vagrant && bundle exec vagrant provision
+
+down:
+	@cd vagrant && bundle exec vagrant destroy --force

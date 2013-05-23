@@ -3,3 +3,4 @@
 modules/
 .librarian/
 /wight/pkg
+/vagrant/.vagrant

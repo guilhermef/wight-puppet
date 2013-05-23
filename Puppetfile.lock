@@ -10,6 +10,11 @@ FORGE
       example42/puppi (>= 2.0.0)
     example42/puppi (2.0.8)
     guilhermef/supervisor (0.0.1)
+    maestrodev/wget (1.1.0)
+    puppetlabs/gcc (0.0.3)
+    thomasvandoren/redis (0.0.9)
+      maestrodev/wget (>= 0.0.0)
+      puppetlabs/gcc (>= 0.0.0)
 
 GIT
   remote: git://github.com/example42/puppet-mongodb.git
@@ -32,4 +37,5 @@ DEPENDENCIES
   guilhermef/supervisor (>= 0)
   mongodb (>= 0)
   sudoers (>= 0)
+  thomasvandoren/redis (>= 0)
 

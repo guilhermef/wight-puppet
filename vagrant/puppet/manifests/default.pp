@@ -10,6 +10,9 @@ node 'BaseNode' {
   package {'python-pip':
   }
 
+  package {'python-dev':
+  }
+
   # sudoers::group { 'admin':
   #   ensure => present,
   #   nopasswd => true,
