@@ -35,4 +35,8 @@ class wight::libgit {
                    Package['make'], Package['cmake'] ],
       path => ['/usr/bin', '/usr/local/bin', '/bin', '/sbin']
   }
+
+  file { "/etc/profile.d/wight_variables.sh":
+    content => "export LD_LIBRARY_PATH=/usr/local/lib"
+  }
 }
