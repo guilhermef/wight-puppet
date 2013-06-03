@@ -55,8 +55,16 @@ shared_examples "a service" do |params|
       command: "wight-#{wight_type} -c #{conf_path}/#{conf_file}",
       user: user,
       group: group,
-      require: ["File[#{conf_path}/#{conf_file}]", "Package[wight]"]
+      require: ["File[#{conf_path}/#{conf_file}]", "Package[wight]", "Class[Wight::Libgit]"]
     )
+  }
+end
+
+shared_examples "a dependency" do |params|
+  include_context "common configuration", params
+
+  it {
+    should include_class('wight::libgit')
   }
 end
 
@@ -81,6 +89,10 @@ describe "wight" do
     it_behaves_like "a service", {wight_type: 'web'}
     it_behaves_like "a service", {wight_type: 'worker'}
     it_behaves_like "a service", {wight_type: 'api'}
+  end
+
+  context "dependencies" do
+    it_behaves_like "a dependency"
   end
 
 end

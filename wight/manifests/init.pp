@@ -50,6 +50,7 @@ define wight (
   ) {
 
   include supervisor
+  include wight::libgit
 
   if ! defined(File[$conf_path]) {
     file{ $conf_path:
@@ -83,6 +84,6 @@ define wight (
     command => "wight-${wight_type} -c ${conf_path}/${conf_file}",
     user => $user,
     group => $group,
-    require => [File["${conf_path}/${conf_file}"], Package['wight']]
+    require => [File["${conf_path}/${conf_file}"], Package['wight'], Class['wight::libgit']]
   }
 }
