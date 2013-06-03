@@ -53,6 +53,7 @@ shared_examples "a service" do |params|
       ensure: 'present',
       enable: true,
       command: "wight-#{wight_type} -c #{conf_path}/#{conf_file}",
+      environment: 'LD_LIBRARY_PATH=/usr/local/lib',
       user: user,
       group: group,
       require: ["File[#{conf_path}/#{conf_file}]", "Package[wight]", "Class[Wight::Libgit]"]
