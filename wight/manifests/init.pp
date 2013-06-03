@@ -51,8 +51,10 @@ define wight (
 
   include wight::libgit
 
-  class {'supervisor':
-    user => $user
+  if ! defined(Class['supervisor']) {
+    class {'supervisor':
+      user => $user
+    }
   }
 
   if ! defined(File[$conf_path]) {
