@@ -49,6 +49,12 @@ shared_examples "a service" do |params|
   include_context "common configuration", params
 
   it {
+    should contain_class("supervisor").with(
+      user: user
+    )
+  }
+
+  it {
     should contain_supervisor__service(title).with(
       ensure: 'present',
       enable: true,

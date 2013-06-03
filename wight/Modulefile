@@ -1,5 +1,5 @@
 name    'guilhermef-wight'
-version '0.0.6'
+version '0.0.7'
 author 'guilhermef'
 license 'MIT'
 summary 'Module for https://github.com/heynemann/wight'

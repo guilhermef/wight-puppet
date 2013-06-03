@@ -49,8 +49,11 @@ define wight (
   $wight_type='api',
   ) {
 
-  include supervisor
   include wight::libgit
+
+  class {'supervisor':
+    user => $user
+  }
 
   if ! defined(File[$conf_path]) {
     file{ $conf_path:
