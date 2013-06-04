@@ -40,7 +40,8 @@ shared_examples "a package" do |params|
   it {
     should contain_package("wight").with(
       provider: 'pip',
-      ensure: wight_version
+      ensure: wight_version,
+      notify: "Class[Supervisor::Update]"
     )
   }
 end

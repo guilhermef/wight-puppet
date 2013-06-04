@@ -79,7 +79,8 @@ define wight (
   if ! defined(Package['wight']) {
     package{'wight':
       ensure => $wight_version,
-      provider => 'pip'
+      provider => 'pip',
+      notify  => Class['supervisor::update']
     }
   }
 
