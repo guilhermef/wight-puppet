@@ -47,6 +47,7 @@ define wight (
   $config_params={number_of_forks => $::processorcount},
   $wight_version='latest',
   $wight_type='api',
+  $wight_port=undef
   ) {
 
   include wight::libgit
@@ -84,10 +85,18 @@ define wight (
     }
   }
 
+
+  $command = "wight-${wight_type} -c ${conf_path}/${conf_file}"
+  if $wight_port {
+    $com = "${command} --port=${wight_port}"
+  } else {
+    $com = $command
+  }
+
   supervisor::service { $title:
     ensure => 'present',
     enable => true,
-    command => "wight-${wight_type} -c ${conf_path}/${conf_file}",
+    command => $com,
     environment => 'LD_LIBRARY_PATH=/usr/local/lib',
     user => $user,
     group => $group,

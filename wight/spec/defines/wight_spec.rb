@@ -11,6 +11,7 @@ shared_context "common configuration" do |params|
   let(:config_params) {params[:config_params] || {'NUMBER_OF_FORKS' => 4}}
   let(:wight_version) {params[:wight_version] || 'latest'}
   let(:wight_type) {params[:wight_type] || 'api'}
+  let(:wight_port) {params[:wight_port] || nil}
 end
 
 shared_examples "a config file" do |params|
@@ -56,10 +57,12 @@ shared_examples "a service" do |params|
   }
 
   it {
+    com = "wight-#{wight_type} -c #{conf_path}/#{conf_file}"
+    com += " --port=#{wight_port}" if wight_port
     should contain_supervisor__service(title).with(
       ensure: 'present',
       enable: true,
-      command: "wight-#{wight_type} -c #{conf_path}/#{conf_file}",
+      command: com,
       environment: 'LD_LIBRARY_PATH=/usr/local/lib',
       user: user,
       group: group,
@@ -97,6 +100,7 @@ describe "wight" do
     it_behaves_like "a service", {wight_type: 'web'}
     it_behaves_like "a service", {wight_type: 'worker'}
     it_behaves_like "a service", {wight_type: 'api'}
+    it_behaves_like "a service", {wight_port: 8080}
   end
 
   context "dependencies" do
