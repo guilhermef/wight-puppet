@@ -8,6 +8,8 @@ shared_context "common configuration" do |params|
   let(:conf_file) { params[:conf_file] || "#{title}.conf" }
   let(:user) {params[:user] || "root"}
   let(:group) {params[:group] || "root"}
+  let(:supervisor_user) {params[:supervisor_user] || "root"}
+  let(:supervisor_group) {params[:supervisor_group] || "root"}
   let(:config_params) {params[:config_params] || {'NUMBER_OF_FORKS' => 4}}
   let(:wight_version) {params[:wight_version] || 'latest'}
   let(:wight_type) {params[:wight_type] || 'api'}
@@ -52,7 +54,7 @@ shared_examples "a service" do |params|
 
   it {
     should contain_class("supervisor").with(
-      user: user
+      user: supervisor_user
     )
   }
 
@@ -64,8 +66,8 @@ shared_examples "a service" do |params|
       enable: true,
       command: com,
       environment: 'LD_LIBRARY_PATH=/usr/local/lib',
-      user: user,
-      group: group,
+      user: supervisor_user,
+      group: supervisor_group,
       require: ["File[#{conf_path}/#{conf_file}]", "Package[wight]", "Class[Wight::Libgit]"]
     )
   }

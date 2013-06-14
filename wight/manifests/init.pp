@@ -42,6 +42,8 @@
 define wight (
   $user='root',
   $group='root',
+  $supervisor_user='root',
+  $supervisor_group='root',
   $conf_path="/etc/${title}",
   $conf_file="${title}.conf",
   $config_params={number_of_forks => $::processorcount},
@@ -54,7 +56,7 @@ define wight (
 
   if ! defined(Class['supervisor']) {
     class {'supervisor':
-      user => $user
+      user => $supervisor_user
     }
   }
 
@@ -98,8 +100,8 @@ define wight (
     enable => true,
     command => $com,
     environment => 'LD_LIBRARY_PATH=/usr/local/lib',
-    user => $user,
-    group => $group,
+    user => $supervisor_user,
+    group => $supervisor_group,
     require => [File["${conf_path}/${conf_file}"], Package['wight'], Class['wight::libgit']]
   }
 }
